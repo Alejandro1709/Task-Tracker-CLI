@@ -8,7 +8,7 @@ if (!fs.existsSync("tasks.json")) {
 
 const tasks = JSON.parse(fs.readFileSync("tasks.json"));
 
-const [, , command, input] = process.argv;
+const [, , command, input, val] = process.argv;
 
 function getId() {
   if (tasks.length === 0) {
@@ -26,7 +26,7 @@ switch (command) {
     listTasks();
     break;
   case "update":
-    updateTask(input);
+    updateTask(input, val);
     break;
   case "delete":
     deleteTask(input);
@@ -38,7 +38,10 @@ switch (command) {
 function createTask() {
   const newTask = {
     id: getId(),
-    message: input,
+    description: input,
+    status: "todo",
+    createdAt: new Date(),
+    updatedAt: new Date(),
   };
 
   tasks.push(newTask);
@@ -53,10 +56,10 @@ function listTasks() {
   }
 }
 
-function updateTask(id) {
+function updateTask(id, val) {
   if (!id) return;
   const mapped = tasks.map((t) =>
-    t.id === +id ? { ...t, message: "new" } : t
+    t.id === +id ? { ...t, description: val, updatedAt: new Date() } : t
   );
   handleSaveTask(mapped);
   console.log("Task updated!");
