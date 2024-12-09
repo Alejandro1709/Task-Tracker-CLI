@@ -8,5 +8,8 @@
   "keywords": [],
   "author": "Alejandro La Rosa",
   "license": "ISC",
-  "description": "CLI For task managment"
+  "description": "CLI For task managment",
+  "bin": {
+    "task-tracker": "./index.js"
+  }
 }
