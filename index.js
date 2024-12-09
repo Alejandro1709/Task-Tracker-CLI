@@ -20,19 +20,51 @@ function getId() {
 
 switch (command) {
   case "add":
-    const newTask = {
-      id: getId(),
-      message: input,
-    };
-    tasks.push(newTask);
-    handleSaveTask(tasks);
-    console.log("Task created!");
+    createTask();
     break;
   case "view":
-    for (let task of tasks) {
-      console.table(task);
-    }
+    listTasks();
+    break;
+  case "update":
+    updateTask(input);
+    break;
+  case "delete":
+    deleteTask(input);
     break;
   default:
     break;
+}
+
+function createTask() {
+  const newTask = {
+    id: getId(),
+    message: input,
+  };
+
+  tasks.push(newTask);
+
+  handleSaveTask(tasks);
+  console.log("Task created!");
+}
+
+function listTasks() {
+  for (let task of tasks) {
+    console.table(task);
+  }
+}
+
+function updateTask(id) {
+  if (!id) return;
+  const mapped = tasks.map((t) =>
+    t.id === +id ? { ...t, message: "new" } : t
+  );
+  handleSaveTask(mapped);
+  console.log("Task updated!");
+}
+
+function deleteTask(id) {
+  if (!id) return;
+  const filtered = tasks.filter((t) => t.id !== +id);
+  handleSaveTask(filtered);
+  console.log("Task deleted!");
 }
